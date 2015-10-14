@@ -81,7 +81,8 @@
 		51CB535F1BCE0AFF00CBF253 = {
 			isa = PBXGroup;
 			children = (
-				51CB536A1BCE0AFF00CBF253 /* ASCamera */,
+				51CB539E1BCE0BCE00CBF253 /* ASCamera */,
+				51CB536A1BCE0AFF00CBF253 /* ASCameraExample */,
 				51CB53841BCE0AFF00CBF253 /* ASCameraTests */,
 				51CB538F1BCE0AFF00CBF253 /* ASCameraUITests */,
 				51CB53691BCE0AFF00CBF253 /* Products */,
@@ -98,7 +99,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		51CB536A1BCE0AFF00CBF253 /* ASCamera */ = {
+		51CB536A1BCE0AFF00CBF253 /* ASCameraExample */ = {
 			isa = PBXGroup;
 			children = (
 				51CB536E1BCE0AFF00CBF253 /* AppDelegate.h */,
@@ -111,6 +112,7 @@
 				51CB537C1BCE0AFF00CBF253 /* Info.plist */,
 				51CB536B1BCE0AFF00CBF253 /* Supporting Files */,
 			);
+			name = ASCameraExample;
 			path = ASCamera;
 			sourceTree = "<group>";
 		};
@@ -138,6 +140,13 @@
 				51CB53921BCE0AFF00CBF253 /* Info.plist */,
 			);
 			path = ASCameraUITests;
+			sourceTree = "<group>";
+		};
+		51CB539E1BCE0BCE00CBF253 /* ASCamera */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = ASCamera;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -495,6 +504,7 @@
 				51CB53971BCE0AFF00CBF253 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		51CB53981BCE0AFF00CBF253 /* Build configuration list for PBXNativeTarget "ASCameraTests" */ = {
 			isa = XCConfigurationList;
@@ -503,6 +513,7 @@
 				51CB539A1BCE0AFF00CBF253 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		51CB539B1BCE0AFF00CBF253 /* Build configuration list for PBXNativeTarget "ASCameraUITests" */ = {
 			isa = XCConfigurationList;
@@ -511,6 +522,7 @@
 				51CB539D1BCE0AFF00CBF253 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
