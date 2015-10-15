@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ASCamera.h"
 
 @interface ViewController : UIViewController
 
+@property (strong, nonatomic) IBOutlet GLKView *liveView;
 
 @end
 

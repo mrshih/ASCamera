@@ -10,6 +10,8 @@
 
 @interface ViewController ()
 
+@property ASCamera *camera;
+
 @end
 
 @implementation ViewController
@@ -24,4 +26,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void) viewDidLayoutSubviews
+{
+    _camera = [[ASCamera alloc]init];
+    [_camera initCamera];
+    [_camera setLiveView:_liveView];
+    [_camera startStream];
+}
 @end

@@ -1,18 +1,22 @@
 //
 //  ASCamera.h
-//  ASCamera
+//  TideCamera
 //
-//  Created by 施安宏 on 2015/10/14.
-//
+//  Created by 施安宏 on 2015/10/15.
+//  Copyright © 2015年 tid. All rights reserved.
 //
 
-@import Foundation;
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <GLKit/GLKit.h>
 @import AVFoundation;
-@import GLKit;
-#import <AVFoundation/AVCaptureSession.h>
 
 @interface ASCamera : NSObject <AVCaptureVideoDataOutputSampleBufferDelegate>
 
+@property (strong, nonatomic) GLKView *liveView;
+
 - (instancetype)init;
+- (void)initCamera;
+- (void)startStream;
 
 @end
