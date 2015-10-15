@@ -15,6 +15,8 @@
 		51CB537B1BCE0AFF00CBF253 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 51CB53791BCE0AFF00CBF253 /* LaunchScreen.storyboard */; };
 		51CB53861BCE0AFF00CBF253 /* ASCameraTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 51CB53851BCE0AFF00CBF253 /* ASCameraTests.m */; };
 		51CB53911BCE0AFF00CBF253 /* ASCameraUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 51CB53901BCE0AFF00CBF253 /* ASCameraUITests.m */; };
+		51CB53A11BCE17CD00CBF253 /* ASCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 51CB53A01BCE17CD00CBF253 /* ASCamera.m */; settings = {ASSET_TAGS = (); }; };
+		51CB53A31BCE304A00CBF253 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51CB53A21BCE304A00CBF253 /* GLKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +53,9 @@
 		51CB538C1BCE0AFF00CBF253 /* ASCameraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ASCameraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		51CB53901BCE0AFF00CBF253 /* ASCameraUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ASCameraUITests.m; sourceTree = "<group>"; };
 		51CB53921BCE0AFF00CBF253 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		51CB539F1BCE17CD00CBF253 /* ASCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASCamera.h; sourceTree = "<group>"; };
+		51CB53A01BCE17CD00CBF253 /* ASCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASCamera.m; sourceTree = "<group>"; };
+		51CB53A21BCE304A00CBF253 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51CB53A31BCE304A00CBF253 /* GLKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +87,7 @@
 		51CB535F1BCE0AFF00CBF253 = {
 			isa = PBXGroup;
 			children = (
+				51CB53A21BCE304A00CBF253 /* GLKit.framework */,
 				51CB539E1BCE0BCE00CBF253 /* ASCamera */,
 				51CB536A1BCE0AFF00CBF253 /* ASCameraExample */,
 				51CB53841BCE0AFF00CBF253 /* ASCameraTests */,
@@ -145,6 +152,8 @@
 		51CB539E1BCE0BCE00CBF253 /* ASCamera */ = {
 			isa = PBXGroup;
 			children = (
+				51CB539F1BCE17CD00CBF253 /* ASCamera.h */,
+				51CB53A01BCE17CD00CBF253 /* ASCamera.m */,
 			);
 			name = ASCamera;
 			sourceTree = "<group>";
@@ -280,6 +289,7 @@
 			files = (
 				51CB53731BCE0AFF00CBF253 /* ViewController.m in Sources */,
 				51CB53701BCE0AFF00CBF253 /* AppDelegate.m in Sources */,
+				51CB53A11BCE17CD00CBF253 /* ASCamera.m in Sources */,
 				51CB536D1BCE0AFF00CBF253 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
