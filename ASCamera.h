@@ -18,5 +18,5 @@
 - (instancetype)init;
 - (void)initCamera;
 - (void)startStream;
-
+- (void)gestureEventReciver:(id)sender;
 @end
