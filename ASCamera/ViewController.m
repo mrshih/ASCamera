@@ -33,4 +33,7 @@
     [_camera setLiveView:_liveView];
     [_camera startStream];
 }
+- (IBAction)anyGesture:(id)sender{
+    [_camera gestureEventReciver:sender];
+}
 @end

@@ -12,6 +12,7 @@
 @interface ViewController : UIViewController
 
 @property (strong, nonatomic) IBOutlet GLKView *liveView;
+- (IBAction)anyGesture:(id)sender;
 
 @end
 
