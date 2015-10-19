@@ -17,6 +17,7 @@
 		51CB53911BCE0AFF00CBF253 /* ASCameraUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 51CB53901BCE0AFF00CBF253 /* ASCameraUITests.m */; };
 		51CB53A11BCE17CD00CBF253 /* ASCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 51CB53A01BCE17CD00CBF253 /* ASCamera.m */; settings = {ASSET_TAGS = (); }; };
 		51CB53A31BCE304A00CBF253 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51CB53A21BCE304A00CBF253 /* GLKit.framework */; };
+		51CB53B01BD4812500CBF253 /* ASCameraHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 51CB53AF1BD4812500CBF253 /* ASCameraHelper.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,8 @@
 		51CB539F1BCE17CD00CBF253 /* ASCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASCamera.h; sourceTree = "<group>"; };
 		51CB53A01BCE17CD00CBF253 /* ASCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASCamera.m; sourceTree = "<group>"; };
 		51CB53A21BCE304A00CBF253 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		51CB53AE1BD4812500CBF253 /* ASCameraHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASCameraHelper.h; sourceTree = "<group>"; };
+		51CB53AF1BD4812500CBF253 /* ASCameraHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASCameraHelper.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,8 +116,8 @@
 				51CB536F1BCE0AFF00CBF253 /* AppDelegate.m */,
 				51CB53711BCE0AFF00CBF253 /* ViewController.h */,
 				51CB53721BCE0AFF00CBF253 /* ViewController.m */,
-				51CB53741BCE0AFF00CBF253 /* Main.storyboard */,
 				51CB53771BCE0AFF00CBF253 /* Assets.xcassets */,
+				51CB53741BCE0AFF00CBF253 /* Main.storyboard */,
 				51CB53791BCE0AFF00CBF253 /* LaunchScreen.storyboard */,
 				51CB537C1BCE0AFF00CBF253 /* Info.plist */,
 				51CB536B1BCE0AFF00CBF253 /* Supporting Files */,
@@ -154,6 +157,8 @@
 			children = (
 				51CB539F1BCE17CD00CBF253 /* ASCamera.h */,
 				51CB53A01BCE17CD00CBF253 /* ASCamera.m */,
+				51CB53AE1BD4812500CBF253 /* ASCameraHelper.h */,
+				51CB53AF1BD4812500CBF253 /* ASCameraHelper.m */,
 			);
 			name = ASCamera;
 			sourceTree = "<group>";
@@ -288,6 +293,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				51CB53731BCE0AFF00CBF253 /* ViewController.m in Sources */,
+				51CB53B01BD4812500CBF253 /* ASCameraHelper.m in Sources */,
 				51CB53701BCE0AFF00CBF253 /* AppDelegate.m in Sources */,
 				51CB53A11BCE17CD00CBF253 /* ASCamera.m in Sources */,
 				51CB536D1BCE0AFF00CBF253 /* main.m in Sources */,

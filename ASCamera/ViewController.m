@@ -26,14 +26,23 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 - (void) viewDidLayoutSubviews
 {
     _camera = [[ASCamera alloc]init];
-    [_camera initCamera];
     [_camera setLiveView:_liveView];
     [_camera startStream];
 }
 - (IBAction)anyGesture:(id)sender{
     [_camera gestureEventReciver:sender];
+}
+
+- (IBAction)shot:(id)sender {
+    //[_camera shotPhoto];
+    [_camera flipCameras];
 }
 @end

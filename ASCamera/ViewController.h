@@ -13,6 +13,7 @@
 
 @property (strong, nonatomic) IBOutlet GLKView *liveView;
 - (IBAction)anyGesture:(id)sender;
+- (IBAction)shot:(id)sender;
 
 @end
 
