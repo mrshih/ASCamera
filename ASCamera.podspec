@@ -82,10 +82,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "ASCamera/*.{h,m}"
-  s.exclude_files = "ASCamrea/Exclude"
-
-  # s.public_header_files = "Classes/**/*.h"
+  s.source_files  = 'ASCamera'
 
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
