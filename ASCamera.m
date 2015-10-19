@@ -205,6 +205,11 @@
     [_session startRunning];
 }
 
+- (void)stopStream
+{
+    [_session stopRunning];
+}
+
 # pragma mark - Live View Gesture Touch Delegate
 - (void)gestureEventReciver:(id)sender
 {
@@ -261,7 +266,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     }
 }
 
-#pragma mark - Focus, Expose Method
+#pragma mark - Managing Focus Setting
 - (void)focusWithLocationFromSender:(id)sender
 {
     UITapGestureRecognizer *tap = sender;
@@ -303,6 +308,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     }
 }
 
+#pragma mark - Managing Expose Setting
 - (void)exposeAdjustWithLocationFromSender:(id)sender
 {
     float   adjust_unit = 0.06;
@@ -339,9 +345,10 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     }
 }
 
+#pragma mark - Managing Scale Setting
 - (void)scaleWithLocationFromSender:(id)sender
 {
-    int     scale_max   = 5;
+    int     scale_max   = _device.activeFormat.videoMaxZoomFactor;
     int     scale_mini  = 1;
     float   adjust_unit = 0.03;
     
@@ -362,6 +369,27 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         _pastPinchScaleValue = recognizer.scale;
         [_device rampToVideoZoomFactor:_currentScale withRate:2];
     }
+}
+
+#pragma mark - Managing Flash Setting
+- (void) isFlashAvailable
+{
+    [_device isFlashAvailable];
+}
+
+- (void) isFlashActive
+{
+    [_device isFlashActive];
+}
+
+- (void) setFlashMode:(AVCaptureFlashMode)mode
+{
+    if (![_device isFlashModeSupported:mode]) {
+        return;
+    }
+    [_device lockForConfiguration:nil];
+    [_device setFlashMode:AVCaptureFlashModeOn];
+    [_device unlockForConfiguration];
 }
 
 #pragma mark - Take Picture
@@ -409,7 +437,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     return result;
 }
 
-#pragma mark
+#pragma mark - For 16:9 Picture Crop
 - (UIImage *)cropImage:(UIImage *)image withCropSize:(CGSize)cropSize
 {
     UIImage *newImage = nil;

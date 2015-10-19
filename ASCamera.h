@@ -22,4 +22,10 @@
 - (void)flipCameras;
 
 - (void)gestureEventReciver:(id)sender;
+
+// UI是否要顯示
+- (void) isFlashAvailable;
+
+// UI是否要hight light
+- (void) isFlashActive;
 @end

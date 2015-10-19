@@ -42,7 +42,7 @@
 }
 
 - (IBAction)shot:(id)sender {
-    //[_camera shotPhoto];
-    [_camera flipCameras];
+    [_camera shotPhoto];
+    //[_camera flipCameras];
 }
 @end
