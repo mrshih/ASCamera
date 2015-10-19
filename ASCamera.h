@@ -16,7 +16,10 @@
 @property (strong, nonatomic) GLKView *liveView;
 
 - (instancetype)init;
-- (void)initCamera;
+
 - (void)startStream;
+- (void)shotPhoto;
+- (void)flipCameras;
+
 - (void)gestureEventReciver:(id)sender;
 @end

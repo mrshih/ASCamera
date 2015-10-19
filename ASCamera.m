@@ -7,6 +7,7 @@
 //
 
 #import "ASCamera.h"
+#import "ASCameraHelper.h"
 
 @interface ASCamera()
 
@@ -35,6 +36,9 @@
 @property float currentScale;
 @property float pastPinchScaleValue;
 
+// Manuly 16:9, 4:3
+@property NSLayoutConstraint *sixnightRatio;
+@property BOOL isFullScreenMode;
 @end
 
 @implementation ASCamera
@@ -43,15 +47,27 @@
 {
     self = [super init];
     if (self) {
+        /* Config device */
+        [self initDeviceWithAutoMode];
+        [self initInput];
+        [self initOutput];
+        [self initSession];
         
+        // defult scale
+        _currentScale = 1.0f;
     }
     return self;
 }
 
-#pragma mark - setter and getter
+#pragma mark - Setter And Getter
 - (void)setLiveView:(GLKView *)liveView
 {
     _liveView = liveView;
+    
+    // add 16:9 constrants
+    _sixnightRatio = [NSLayoutConstraint constraintWithItem:_liveView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_liveView attribute:NSLayoutAttributeWidth multiplier:1.3f constant:0.0f];
+    _sixnightRatio.active = NO;
+    [liveView addConstraint:_sixnightRatio];
     
     /* OpenGL */
     // 創建OpenGLES渲染環境
@@ -64,20 +80,7 @@
     _ciContext = [CIContext contextWithEAGLContext:_glContext options:@{ kCIContextWorkingColorSpace : [NSNull null],kCIContextUseSoftwareRenderer : @(NO)}];
 }
 
-#pragma mark - init and config device
-
-- (void)initCamera
-{
-    /* Config device */
-    [self initDeviceWithAutoMode];
-    [self initInput];
-    [self initOutput];
-    [self initSession];
-    
-    // defult scale
-    _currentScale = 1.0f;
-}
-
+#pragma mark - Camera Init and Config Device
 - (void)initDeviceWithAutoMode
 {
     /* Device */
@@ -146,14 +149,63 @@
     [self configSessionConnectionToPortrait:_stillImageOutput];
 }
 
-#pragma mark - play & stop
+/*
+ * 根據鏡頭設定connection，這個方法通常在seeion被change之後需要被呼叫，因為connection某西設定如鏡像需要設定。
+ */
+- (void)configSessionConnectionToPortrait:(AVCaptureOutput *)output
+{
+    for (AVCaptureConnection *connection in output.connections) {
+        for (AVCaptureInputPort *port in [connection inputPorts]) {
+            if ([[port mediaType] isEqual:AVMediaTypeVideo] ) {
+                if ([connection isVideoOrientationSupported])
+                {
+                    if ([output isKindOfClass:[AVCaptureVideoDataOutput class]]) {
+                        _videoConnection = connection;
+                    }else if ([output isKindOfClass:[AVCaptureStillImageOutput class]]){
+                        _stillImageConnection = connection;
+                    }
+                    
+                    /* For ALL */
+                    // Set Portrait
+                    [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
+                    
+                    
+                    /* For Front Camera only */
+                    if (_device == [ASCameraHelper frontCamera]) {
+                        [connection setVideoMirrored:YES];
+                    }
+                }
+                break;
+            }
+        }
+    }
+}
+
+
+#pragma mark - Change Front And Back Camera
+- (void)flipCameras
+{
+    [_session beginConfiguration];
+    [_session removeInput:_input];
+    if (_device != [ASCameraHelper frontCamera]) {
+        _device = [ASCameraHelper frontCamera];
+    }else if(_device == [ASCameraHelper frontCamera]){
+        _device = [ASCameraHelper backCamera];
+    }
+    _input = [AVCaptureDeviceInput deviceInputWithDevice:_device error:nil];
+    [_session addInput:_input];
+    [_session commitConfiguration];
+    
+    [self configSessionConnectionToPortrait:_videoFrameOutput];
+}
+
+#pragma mark - Live View play & stop
 - (void)startStream
 {
     [_session startRunning];
 }
 
-
-# pragma mark Gesture Touch Delegate
+# pragma mark - Live View Gesture Touch Delegate
 - (void)gestureEventReciver:(id)sender
 {
     // tap = 對焦
@@ -172,23 +224,22 @@
     }
 }
 
-#pragma mark - config utility
-/*
- * 透過connection讓畫面轉正
- */
-- (void)configSessionConnectionToPortrait:(AVCaptureOutput *)output
+#pragma mark - Live View Ration Change
+- (void) liveViewRationChange
 {
-    for (AVCaptureConnection *connection in output.connections) {
-        for (AVCaptureInputPort *port in [connection inputPorts]) {
-            if ([[port mediaType] isEqual:AVMediaTypeVideo] ) {
-                if ([connection isVideoOrientationSupported])
-                {
-                    [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
-                }
-                break;
-            }
-        }
-    }
+//    if ([_glViewRatio isActive]) {
+//        [_glViewRatio setActive:NO];
+//        [_sixnightRatio setActive:YES];
+//        [_glViewBottomSpace setActive:NO];
+//    }else{
+//        [_glViewRatio setActive:YES];
+//        [_sixnightRatio setActive:NO];
+//        [_glViewBottomSpace setActive:YES];
+//    }
+//    
+//    [UIView animateWithDuration:0.5 animations:^{
+//        [self.view layoutIfNeeded];
+//    }];
 }
 
 #pragma mark - AVCaptureVideoDataOutputSampleBufferDelegate
@@ -254,6 +305,8 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 
 - (void)exposeAdjustWithLocationFromSender:(id)sender
 {
+    float   adjust_unit = 0.06;
+    
     if([sender isKindOfClass:[UIPanGestureRecognizer class]]){
         UIPanGestureRecognizer *recognizer = sender;
         
@@ -266,16 +319,16 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         if([_device lockForConfiguration:nil]){
             if (vel.y <0)   // panning down
             {
-                if (_currentEV + 0.06 < _maxEV) {
-                    _currentEV  = _currentEV + 0.06;
+                if (_currentEV + adjust_unit < _maxEV) {
+                    _currentEV  = _currentEV + adjust_unit;
                     NSLog(@"%f",_currentEV);
                     [_device setExposureTargetBias:_currentEV completionHandler:^(CMTime syncTime) {
                         
                     }];
                 }
             }else{
-                if (_currentEV - 0.06 > _minEV) {
-                    _currentEV  = _currentEV - 0.06;
+                if (_currentEV - adjust_unit > _minEV) {
+                    _currentEV  = _currentEV - adjust_unit;
                     NSLog(@"%f",_currentEV);
                     [_device setExposureTargetBias:_currentEV completionHandler:^(CMTime syncTime) {
                         
@@ -309,5 +362,106 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         _pastPinchScaleValue = recognizer.scale;
         [_device rampToVideoZoomFactor:_currentScale withRate:2];
     }
+}
+
+#pragma mark - Take Picture
+- (void)shotPhoto{
+    
+    UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
+    AVCaptureVideoOrientation videoOrientation = [self videoOrientationForDeviceOrientation:deviceOrientation];
+    [_stillImageConnection setVideoOrientation:videoOrientation];
+    
+    __weak __typeof(self)weakself = self;
+    [_stillImageOutput captureStillImageAsynchronouslyFromConnection:_stillImageConnection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+        
+        __strong __typeof(self)strongself = weakself;
+        
+        NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+        UIImage *image = [[UIImage alloc] initWithData:imageData];
+        NSLog(@"%ld",(long)[image imageOrientation]);
+        if (_isFullScreenMode) {
+//            UIImage *crop_image =[strongself cropImage:image withCropSize:CGSizeMake(1836, 3264)];
+//            
+//            CFDictionaryRef metadata = CMCopyDictionaryOfAttachments(NULL, imageDataSampleBuffer, kCMAttachmentMode_ShouldPropagate);
+//            NSDictionary *meta = [[NSDictionary alloc] initWithDictionary:(__bridge NSDictionary *)(metadata)];
+//            CFRelease(metadata);
+        }
+    }];
+}
+
+- (AVCaptureVideoOrientation)videoOrientationForDeviceOrientation:(UIDeviceOrientation)deviceOrientation
+{
+    AVCaptureVideoOrientation result = (AVCaptureVideoOrientation) deviceOrientation;
+    
+    switch (deviceOrientation) {
+        case UIDeviceOrientationLandscapeLeft:
+            result = AVCaptureVideoOrientationLandscapeRight;
+            break;
+            
+        case UIDeviceOrientationLandscapeRight:
+            result = AVCaptureVideoOrientationLandscapeLeft;
+            break;
+            
+        default:
+            break;
+    }
+    
+    return result;
+}
+
+#pragma mark
+- (UIImage *)cropImage:(UIImage *)image withCropSize:(CGSize)cropSize
+{
+    UIImage *newImage = nil;
+    
+    CGSize imageSize = image.size;
+    CGFloat width = imageSize.width;
+    CGFloat height = imageSize.height;
+    
+    CGFloat targetWidth = cropSize.width;
+    CGFloat targetHeight = cropSize.height;
+    
+    CGFloat scaleFactor = 0;
+    CGFloat scaledWidth = targetWidth;
+    CGFloat scaledHeight = targetHeight;
+    
+    CGPoint thumbnailPoint = CGPointMake(0, 0);
+    
+    if (CGSizeEqualToSize(imageSize, cropSize) == NO) {
+        CGFloat widthFactor = targetWidth / width;
+        CGFloat heightFactor = targetHeight / height;
+        
+        if (widthFactor > heightFactor) {
+            scaleFactor = widthFactor;
+        } else {
+            scaleFactor = heightFactor;
+        }
+        
+        scaledWidth  = width * scaleFactor;
+        scaledHeight = height * scaleFactor;
+        
+        
+        if (widthFactor > heightFactor) {
+            thumbnailPoint.y = (targetHeight - scaledHeight) * .5f;
+        } else {
+            if (widthFactor < heightFactor) {
+                thumbnailPoint.x = (targetWidth - scaledWidth) * .5f;
+            }
+        }
+    }
+    
+    UIGraphicsBeginImageContextWithOptions(cropSize, YES, 0);
+    
+    CGRect thumbnailRect = CGRectZero;
+    thumbnailRect.origin = thumbnailPoint;
+    thumbnailRect.size.width  = scaledWidth;
+    thumbnailRect.size.height = scaledHeight;
+    
+    [image drawInRect:thumbnailRect];
+    newImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return newImage;
 }
 @end

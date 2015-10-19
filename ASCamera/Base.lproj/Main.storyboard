@@ -19,10 +19,22 @@
                         <subviews>
                             <glkView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" enableSetNeedsDisplay="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7RL-jP-DEs">
                                 <rect key="frame" x="0.0" y="20" width="375" height="500"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tgD-xe-xuK">
+                                        <rect key="frame" x="164" y="431" width="46" height="30"/>
+                                        <animations/>
+                                        <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="shot:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4h1-fI-QUl"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
                                 <animations/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="tgD-xe-xuK" firstAttribute="centerX" secondItem="7RL-jP-DEs" secondAttribute="centerX" id="Fb9-Bg-6Ff"/>
                                     <constraint firstAttribute="width" secondItem="7RL-jP-DEs" secondAttribute="height" multiplier="3:4" id="PRc-2L-fBX"/>
+                                    <constraint firstAttribute="bottom" secondItem="tgD-xe-xuK" secondAttribute="bottom" constant="39" id="e76-wm-rXA"/>
                                 </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="YLf-6K-ZyM" appends="YES" id="B0c-5N-iBh"/>
