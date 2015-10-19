@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "ASCamera"
-  s.version      = "0.1"
+  s.version      = "0.2"
   s.summary      = "A delightful iOS Camera Library"
 
   s.description  = <<-DESC
@@ -82,8 +82,8 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "Classes", "Classes/**/*.{h,m}"
-  s.exclude_files = "Classes/Exclude"
+  s.source_files  = "ASCamera/*.{h,m}"
+  s.exclude_files = "ASCamrea/Exclude"
 
   # s.public_header_files = "Classes/**/*.h"
 
