@@ -122,8 +122,7 @@
 				51CB537C1BCE0AFF00CBF253 /* Info.plist */,
 				51CB536B1BCE0AFF00CBF253 /* Supporting Files */,
 			);
-			name = ASCameraExample;
-			path = ASCamera;
+			path = ASCameraExample;
 			sourceTree = "<group>";
 		};
 		51CB536B1BCE0AFF00CBF253 /* Supporting Files */ = {
@@ -160,7 +159,7 @@
 				51CB53AE1BD4812500CBF253 /* ASCameraHelper.h */,
 				51CB53AF1BD4812500CBF253 /* ASCameraHelper.m */,
 			);
-			name = ASCamera;
+			path = ASCamera;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
