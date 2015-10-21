@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "ASCamera"
-  s.version      = "0.3"
+  s.version      = "0.4"
   s.summary      = "A delightful iOS Camera Library"
 
   s.description  = <<-DESC
@@ -71,7 +71,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/mrshih/ASCamera.git", :tag => "v0.1" }
+  s.source       = { :git => "https://github.com/mrshih/ASCamera.git", :tag => "v0.4" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #

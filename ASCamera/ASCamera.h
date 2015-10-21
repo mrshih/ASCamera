@@ -18,6 +18,7 @@
 - (instancetype)init;
 
 - (void)startStream;
+- (void)stopStream;
 - (void)shotPhoto;
 - (void)flipCameras;
 

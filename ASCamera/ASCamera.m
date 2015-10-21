@@ -112,7 +112,7 @@
         [_device setWhiteBalanceMode:AVCaptureWhiteBalanceModeAutoWhiteBalance];
         [_device unlockForConfiguration];
     }
-
+    
 }
 
 - (void)initInput
@@ -232,19 +232,19 @@
 #pragma mark - Live View Ration Change
 - (void) liveViewRationChange
 {
-//    if ([_glViewRatio isActive]) {
-//        [_glViewRatio setActive:NO];
-//        [_sixnightRatio setActive:YES];
-//        [_glViewBottomSpace setActive:NO];
-//    }else{
-//        [_glViewRatio setActive:YES];
-//        [_sixnightRatio setActive:NO];
-//        [_glViewBottomSpace setActive:YES];
-//    }
-//    
-//    [UIView animateWithDuration:0.5 animations:^{
-//        [self.view layoutIfNeeded];
-//    }];
+    //    if ([_glViewRatio isActive]) {
+    //        [_glViewRatio setActive:NO];
+    //        [_sixnightRatio setActive:YES];
+    //        [_glViewBottomSpace setActive:NO];
+    //    }else{
+    //        [_glViewRatio setActive:YES];
+    //        [_sixnightRatio setActive:NO];
+    //        [_glViewBottomSpace setActive:YES];
+    //    }
+    //
+    //    [UIView animateWithDuration:0.5 animations:^{
+    //        [self.view layoutIfNeeded];
+    //    }];
 }
 
 #pragma mark - AVCaptureVideoDataOutputSampleBufferDelegate
@@ -408,11 +408,11 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         UIImage *image = [[UIImage alloc] initWithData:imageData];
         NSLog(@"%ld",(long)[image imageOrientation]);
         if (_isFullScreenMode) {
-//            UIImage *crop_image =[strongself cropImage:image withCropSize:CGSizeMake(1836, 3264)];
-//            
-//            CFDictionaryRef metadata = CMCopyDictionaryOfAttachments(NULL, imageDataSampleBuffer, kCMAttachmentMode_ShouldPropagate);
-//            NSDictionary *meta = [[NSDictionary alloc] initWithDictionary:(__bridge NSDictionary *)(metadata)];
-//            CFRelease(metadata);
+            //            UIImage *crop_image =[strongself cropImage:image withCropSize:CGSizeMake(1836, 3264)];
+            //
+            //            CFDictionaryRef metadata = CMCopyDictionaryOfAttachments(NULL, imageDataSampleBuffer, kCMAttachmentMode_ShouldPropagate);
+            //            NSDictionary *meta = [[NSDictionary alloc] initWithDictionary:(__bridge NSDictionary *)(metadata)];
+            //            CFRelease(metadata);
         }
     }];
 }
