@@ -113,6 +113,12 @@
         [_device unlockForConfiguration];
     }
     
+    /* Auto Flash Mode */
+    if ([_device isFlashModeSupported:AVCaptureFlashModeAuto]) {
+        [_device lockForConfiguration: nil];
+        [_device setFlashMode:AVCaptureFlashModeAuto];
+        [_device unlockForConfiguration];
+    }
 }
 
 - (void)initInput
@@ -197,6 +203,29 @@
     [_session commitConfiguration];
     
     [self configSessionConnectionToPortrait:_videoFrameOutput];
+}
+
+#pragma mark - Flash Control
+- (AVCaptureFlashMode)autoPollingFlashMode {
+    [_device lockForConfiguration:nil];
+    switch ([_device flashMode]) {
+        case AVCaptureFlashModeOff:
+            [_device setFlashMode:AVCaptureFlashModeAuto];
+            break;
+            
+        case AVCaptureFlashModeOn:
+            [_device setFlashMode:AVCaptureFlashModeOff];
+            break;
+            
+        case AVCaptureFlashModeAuto:
+            [_device setFlashMode:AVCaptureFlashModeOn];
+            break;
+            
+        default:
+            break;
+    }
+    [_device unlockForConfiguration];
+    return [_device flashMode];
 }
 
 #pragma mark - Live View play & stop

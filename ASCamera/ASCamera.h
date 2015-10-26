@@ -21,6 +21,7 @@
 - (void)stopStream;
 - (void)shotPhoto;
 - (void)flipCameras;
+- (AVCaptureFlashMode)autoPollingFlashMode;
 
 - (void)gestureEventReciver:(id)sender;
 
