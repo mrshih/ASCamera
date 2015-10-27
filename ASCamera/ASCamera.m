@@ -102,7 +102,7 @@
     if ([_device isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure])
     {
         [_device lockForConfiguration: nil];
-        [_device setExposureMode:AVCaptureExposureModeAutoExpose];
+        [_device setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
         [_device unlockForConfiguration];
     }
     
@@ -210,15 +210,21 @@
     [_device lockForConfiguration:nil];
     switch ([_device flashMode]) {
         case AVCaptureFlashModeOff:
-            [_device setFlashMode:AVCaptureFlashModeAuto];
+            if ([_device isFlashModeSupported:AVCaptureFlashModeAuto]) {
+                [_device setFlashMode:AVCaptureFlashModeAuto];
+            }
             break;
             
         case AVCaptureFlashModeOn:
-            [_device setFlashMode:AVCaptureFlashModeOff];
+            if ([_device isFlashModeSupported:AVCaptureFlashModeOff]) {
+                [_device setFlashMode:AVCaptureFlashModeOff];
+            }
             break;
             
         case AVCaptureFlashModeAuto:
-            [_device setFlashMode:AVCaptureFlashModeOn];
+            if ([_device isFlashModeSupported:AVCaptureFlashModeOn]) {
+                [_device setFlashMode:AVCaptureFlashModeOn];
+            }
             break;
             
         default:
@@ -307,7 +313,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         CGSize frameSize = _liveView.bounds.size;
         
         pointOfInterest = CGPointMake(point.y / frameSize.height, 1.f - (point.x / frameSize.width));
-        NSLog(@"%f,%f",pointOfInterest.x,pointOfInterest.y);
         if ([device isFocusPointOfInterestSupported] && [device isFocusModeSupported:AVCaptureFocusModeAutoFocus]) {
             
             //Lock camera for configuration if possible
@@ -443,6 +448,13 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
             //            NSDictionary *meta = [[NSDictionary alloc] initWithDictionary:(__bridge NSDictionary *)(metadata)];
             //            CFRelease(metadata);
         }
+        [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+            [PHAssetChangeRequest creationRequestForAssetFromImage:image];
+        } completionHandler:^(BOOL success, NSError * _Nullable error) {
+            if (success) {
+                //NSLog(@"Finished adding asset. %@", (success ? @"SUCCESSFUL" : error));
+            }
+        }];
     }];
 }
 

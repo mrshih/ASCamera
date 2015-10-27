@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
 @import AVFoundation;
+@import Photos;
 
 @interface ASCamera : NSObject <AVCaptureVideoDataOutputSampleBufferDelegate>
 
