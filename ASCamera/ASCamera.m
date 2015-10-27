@@ -8,8 +8,11 @@
 
 #import "ASCamera.h"
 #import "ASCameraHelper.h"
+#import <pop/POP.h>
 
-@interface ASCamera()
+@interface ASCamera(){
+    UIImageView *focusImage;
+}
 
 @property AVCaptureDevice       *device;
 
@@ -313,6 +316,9 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         CGSize frameSize = _liveView.bounds.size;
         
         pointOfInterest = CGPointMake(point.y / frameSize.height, 1.f - (point.x / frameSize.width));
+        
+        [self showFocusAnimationWithPoint:point];
+        
         if ([device isFocusPointOfInterestSupported] && [device isFocusModeSupported:AVCaptureFocusModeAutoFocus]) {
             
             //Lock camera for configuration if possible
@@ -532,5 +538,42 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     UIGraphicsEndImageContext();
     
     return newImage;
+}
+
+#pragma mark - Pop animation related
+- (void)showFocusAnimationWithPoint:(CGPoint)point {
+    if (focusImage) {
+        [focusImage pop_removeAllAnimations];
+        [focusImage removeFromSuperview];
+        focusImage = nil;
+    }
+    CGFloat imageWidth = 80;
+    focusImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"cam_focus"]];
+    [_liveView addSubview:focusImage];
+    
+    // ADD Focus animation
+    POPSpringAnimation *springAnimation = [POPSpringAnimation animation];
+    [springAnimation setProperty:[POPAnimatableProperty propertyWithName:kPOPViewAlpha]];
+    [springAnimation setFromValue:@(0.2f)];
+    [springAnimation setToValue:@(1.0f)];
+    springAnimation.springBounciness = 20.0f;
+    springAnimation.springSpeed = 8.0f;
+    
+    //__weak POPSpringAnimation *weakAnimaton = springAnimation;
+    springAnimation.completionBlock = ^(POPAnimation *anim, BOOL finished) {
+        //__strong POPSpringAnimation *animaton = weakAnimaton;
+        [focusImage setImage:[UIImage imageNamed:@"cam_focus_good"]];
+//        [animaton pop_removeAllAnimations];
+//        animaton.beginTime = 1.3f;
+//        animaton.toValue = @(0.35f);
+        
+        [UIView animateWithDuration:0.0f delay:1.3f options:UIViewAnimationOptionCurveLinear animations:^{
+            focusImage.alpha = 0.35f;
+        } completion:^(BOOL finished) {
+            
+        }];
+    };
+    [focusImage pop_addAnimation:springAnimation forKey:@"focusImageIn"];
+    [focusImage setFrame:CGRectMake(point.x-imageWidth/2, point.y-imageWidth/2, imageWidth, imageWidth)];
 }
 @end
