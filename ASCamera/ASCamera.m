@@ -554,18 +554,19 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     // ADD Focus animation
     POPSpringAnimation *springAnimation = [POPSpringAnimation animation];
     [springAnimation setProperty:[POPAnimatableProperty propertyWithName:kPOPViewAlpha]];
-    [springAnimation setFromValue:@(0.2f)];
+    springAnimation.velocity=@(1000);
+    [springAnimation setFromValue:@(0.4f)];
     [springAnimation setToValue:@(1.0f)];
-    springAnimation.springBounciness = 20.0f;
-    springAnimation.springSpeed = 8.0f;
+    springAnimation.springBounciness = 4.0f;
+    springAnimation.springSpeed = 4.0f;
     
     //__weak POPSpringAnimation *weakAnimaton = springAnimation;
     springAnimation.completionBlock = ^(POPAnimation *anim, BOOL finished) {
         //__strong POPSpringAnimation *animaton = weakAnimaton;
         [focusImage setImage:[UIImage imageNamed:@"cam_focus_good"]];
-//        [animaton pop_removeAllAnimations];
-//        animaton.beginTime = 1.3f;
-//        animaton.toValue = @(0.35f);
+        //        [animaton pop_removeAllAnimations];
+        //        animaton.beginTime = 1.3f;
+        //        animaton.toValue = @(0.35f);
         
         [UIView animateWithDuration:0.0f delay:1.3f options:UIViewAnimationOptionCurveLinear animations:^{
             focusImage.alpha = 0.35f;
