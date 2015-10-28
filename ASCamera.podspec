@@ -82,7 +82,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = 'ASCamera'
+  s.source_files  = 'ASCamera/*.{h,m}'
 
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -94,7 +94,7 @@ Pod::Spec.new do |s|
   #
 
   # s.resource  = "icon.png"
-  s.resources = "source.xcassets"
+  s.resources = "ASCamera/source.xcassets"
 
   # s.preserve_paths = "FilesToSave", "MoreFilesToSave"
 

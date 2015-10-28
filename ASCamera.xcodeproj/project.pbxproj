@@ -46,7 +46,7 @@
 		51CB53711BCE0AFF00CBF253 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		51CB53721BCE0AFF00CBF253 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		51CB53751BCE0AFF00CBF253 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		51CB53771BCE0AFF00CBF253 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		51CB53771BCE0AFF00CBF253 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ASCameraExample/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		51CB537A1BCE0AFF00CBF253 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		51CB537C1BCE0AFF00CBF253 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		51CB53811BCE0AFF00CBF253 /* ASCameraTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ASCameraTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -55,11 +55,11 @@
 		51CB538C1BCE0AFF00CBF253 /* ASCameraUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ASCameraUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		51CB53901BCE0AFF00CBF253 /* ASCameraUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ASCameraUITests.m; sourceTree = "<group>"; };
 		51CB53921BCE0AFF00CBF253 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		51CB539F1BCE17CD00CBF253 /* ASCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASCamera.h; sourceTree = "<group>"; };
-		51CB53A01BCE17CD00CBF253 /* ASCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASCamera.m; sourceTree = "<group>"; };
+		51CB539F1BCE17CD00CBF253 /* ASCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASCamera.h; path = ../ASCamera.h; sourceTree = "<group>"; };
+		51CB53A01BCE17CD00CBF253 /* ASCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASCamera.m; path = ../ASCamera.m; sourceTree = "<group>"; };
 		51CB53A21BCE304A00CBF253 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
-		51CB53AE1BD4812500CBF253 /* ASCameraHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASCameraHelper.h; sourceTree = "<group>"; };
-		51CB53AF1BD4812500CBF253 /* ASCameraHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASCameraHelper.m; sourceTree = "<group>"; };
+		51CB53AE1BD4812500CBF253 /* ASCameraHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASCameraHelper.h; path = ../ASCameraHelper.h; sourceTree = "<group>"; };
+		51CB53AF1BD4812500CBF253 /* ASCameraHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASCameraHelper.m; path = ../ASCameraHelper.m; sourceTree = "<group>"; };
 		9C22374771DFEB2818C84639 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		BD76ACA40F69405318E06B96 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8EDAD93EAA1282A8C02118C /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -131,7 +131,6 @@
 				51CB536F1BCE0AFF00CBF253 /* AppDelegate.m */,
 				51CB53711BCE0AFF00CBF253 /* ViewController.h */,
 				51CB53721BCE0AFF00CBF253 /* ViewController.m */,
-				51CB53771BCE0AFF00CBF253 /* Assets.xcassets */,
 				51CB53741BCE0AFF00CBF253 /* Main.storyboard */,
 				51CB53791BCE0AFF00CBF253 /* LaunchScreen.storyboard */,
 				51CB537C1BCE0AFF00CBF253 /* Info.plist */,
@@ -173,8 +172,10 @@
 				51CB53A01BCE17CD00CBF253 /* ASCamera.m */,
 				51CB53AE1BD4812500CBF253 /* ASCameraHelper.h */,
 				51CB53AF1BD4812500CBF253 /* ASCameraHelper.m */,
+				51CB53771BCE0AFF00CBF253 /* Assets.xcassets */,
 			);
-			path = ASCamera;
+			name = ASCamera;
+			path = ASCamera/source.xcassets;
 			sourceTree = "<group>";
 		};
 		DE3766CCF5CF2E4EF046E370 /* Pods */ = {
