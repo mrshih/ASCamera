@@ -42,7 +42,9 @@
 }
 
 - (IBAction)shot:(id)sender {
-    [_camera shotPhoto];
+    [_camera shotPhoto:^(UIImage *photo, BOOL successful) {
+        
+    }];
     //[_camera flipCameras];
 }
 @end

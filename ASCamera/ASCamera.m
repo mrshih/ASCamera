@@ -176,12 +176,11 @@
                     
                     /* For ALL */
                     // Set Portrait
-                    [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
-                    
+                    [_videoConnection setVideoOrientation:AVCaptureVideoOrientationPortrait];
                     
                     /* For Front Camera only */
                     if (_device == [ASCameraHelper frontCamera]) {
-                        [connection setVideoMirrored:YES];
+                        [_videoConnection setVideoMirrored:YES];
                     }
                 }
                 break;
@@ -206,6 +205,7 @@
     [_session commitConfiguration];
     
     [self configSessionConnectionToPortrait:_videoFrameOutput];
+    [self configSessionConnectionToPortrait:_stillImageOutput];
 }
 
 #pragma mark - Flash Control
@@ -433,7 +433,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
 }
 
 #pragma mark - Take Picture
-- (void)shotPhoto{
+- (void)shotPhoto:(shotCompleteHandler)handler {
     
     UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
     AVCaptureVideoOrientation videoOrientation = [self videoOrientationForDeviceOrientation:deviceOrientation];
@@ -460,6 +460,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
             if (success) {
                 //NSLog(@"Finished adding asset. %@", (success ? @"SUCCESSFUL" : error));
             }
+            handler(image, success);
         }];
     }];
 }

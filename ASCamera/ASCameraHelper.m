@@ -49,7 +49,16 @@
 + (AVCaptureDevice *)backCamera
 {
     NSArray *videoDevices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-    return videoDevices[0];
+    AVCaptureDevice *captureDevice = nil;
+    for (AVCaptureDevice *device in videoDevices)
+    {
+        if (device.position == AVCaptureDevicePositionBack)
+        {
+            captureDevice = device;
+            break;
+        }
+    }
+    return captureDevice;
 }
 
 @end

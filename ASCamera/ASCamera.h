@@ -12,6 +12,8 @@
 @import AVFoundation;
 @import Photos;
 
+typedef void (^shotCompleteHandler)(UIImage *photo, BOOL successful);
+
 @interface ASCamera : NSObject <AVCaptureVideoDataOutputSampleBufferDelegate>
 
 @property (strong, nonatomic) GLKView *liveView;
@@ -20,7 +22,7 @@
 
 - (void)startStream;
 - (void)stopStream;
-- (void)shotPhoto;
+- (void)shotPhoto:(shotCompleteHandler)handler;
 - (void)flipCameras;
 - (AVCaptureFlashMode)autoPollingFlashMode;
 
