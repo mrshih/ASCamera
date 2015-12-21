@@ -567,7 +567,7 @@
     }
     CGFloat imageWidth = 80;
     focusImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"cam_focus"]];
-    [_liveView addSubview:focusImage];
+    [_liveView.layer addSublayer:focusImage.layer];
     
     // ADD Focus animation
     POPSpringAnimation *springAnimation = [POPSpringAnimation animation];
