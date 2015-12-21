@@ -16,13 +16,12 @@ typedef void (^shotCompleteHandler)(UIImage *photo, BOOL successful);
 
 @interface ASCamera : NSObject <AVCaptureVideoDataOutputSampleBufferDelegate>
 
-@property (strong, nonatomic) GLKView *liveView;
-
-- (instancetype)init;
+- (instancetype)initWithLifeView:(UIView*)view;
 
 - (void)startStream;
 - (void)stopStream;
 - (void)shotPhoto:(shotCompleteHandler)handler;
+- (void)recordMovie;
 - (void)flipCameras;
 - (AVCaptureFlashMode)autoPollingFlashMode;
 

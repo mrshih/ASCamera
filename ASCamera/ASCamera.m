@@ -13,18 +13,21 @@
 @interface ASCamera(){
     UIImageView *focusImage;
 }
+//@property (strong, nonatomic) GLKView *liveView;
+@property (strong, nonatomic)UIView *liveView;
 
 @property AVCaptureDevice       *device;
-
 @property AVCaptureInput        *input;
-
 @property AVCaptureSession      *session;
 
 @property AVCaptureConnection   *videoConnection;
 @property AVCaptureConnection   *stillImageConnection;
 
-@property AVCaptureVideoDataOutput  *videoFrameOutput;
+//@property AVCaptureVideoDataOutput  *videoFrameOutput;
 @property AVCaptureStillImageOutput *stillImageOutput;
+@property AVCaptureMovieFileOutput  *movieFileOutput;
+
+@property (strong, nonatomic) AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
 
 // LiveView
 @property EAGLContext           *glContext;
@@ -46,15 +49,17 @@
 
 @implementation ASCamera
 
-- (instancetype)init
+- (instancetype)initWithLifeView:(UIView*)view
 {
     self = [super init];
     if (self) {
+        _liveView = view;
         /* Config device */
         [self initDeviceWithAutoMode];
         [self initInput];
         [self initOutput];
         [self initSession];
+        [self initLiveView];
         
         // defult scale
         _currentScale = 1.0f;
@@ -65,22 +70,32 @@
 #pragma mark - Setter And Getter
 - (void)setLiveView:(GLKView *)liveView
 {
-    _liveView = liveView;
-    
-    // add 16:9 constrants
-    _sixnightRatio = [NSLayoutConstraint constraintWithItem:_liveView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_liveView attribute:NSLayoutAttributeWidth multiplier:1.3f constant:0.0f];
-    _sixnightRatio.active = NO;
-    [liveView addConstraint:_sixnightRatio];
-    
-    /* OpenGL */
-    // 創建OpenGLES渲染環境
-    _glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-    // GLKView指定OpenGLES渲染環境+綁定
-    [_liveView setContext:_glContext];
-    _liveView.enableSetNeedsDisplay = NO;
-    [_liveView bindDrawable];
-    // 創建CIContext環境
-    _ciContext = [CIContext contextWithEAGLContext:_glContext options:@{ kCIContextWorkingColorSpace : [NSNull null],kCIContextUseSoftwareRenderer : @(NO)}];
+    //    _liveView = liveView;
+    //
+    //    // add 16:9 constrants
+    //    _sixnightRatio = [NSLayoutConstraint constraintWithItem:_liveView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_liveView attribute:NSLayoutAttributeWidth multiplier:1.3f constant:0.0f];
+    //    _sixnightRatio.active = NO;
+    //    [liveView addConstraint:_sixnightRatio];
+    //
+    //    /* OpenGL */
+    //    // 創建OpenGLES渲染環境
+    //    _glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+    //    // GLKView指定OpenGLES渲染環境+綁定
+    //    [_liveView setContext:_glContext];
+    //    _liveView.enableSetNeedsDisplay = NO;
+    //    [_liveView bindDrawable];
+    //    // 創建CIContext環境
+    //    _ciContext = [CIContext contextWithEAGLContext:_glContext options:@{ kCIContextWorkingColorSpace : [NSNull null],kCIContextUseSoftwareRenderer : @(NO)}];
+}
+
+- (void)initLiveView {
+    // preview layer
+    CGRect bounds = self.liveView.layer.bounds;
+    _captureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.session];
+    _captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    _captureVideoPreviewLayer.bounds = bounds;
+    _captureVideoPreviewLayer.position = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+    [self.liveView.layer addSublayer:_captureVideoPreviewLayer];
 }
 
 #pragma mark - Camera Init and Config Device
@@ -132,14 +147,17 @@
 - (void)initOutput
 {
     /* Video frame Output */
-    _videoFrameOutput = [[AVCaptureVideoDataOutput alloc]init];
-    [_videoFrameOutput setAlwaysDiscardsLateVideoFrames:YES];
-    [_videoFrameOutput setSampleBufferDelegate:self queue:dispatch_queue_create("sample buffer delegate", DISPATCH_QUEUE_SERIAL)];
+    //    _videoFrameOutput = [[AVCaptureVideoDataOutput alloc]init];
+    //    [_videoFrameOutput setAlwaysDiscardsLateVideoFrames:YES];
+    //    [_videoFrameOutput setSampleBufferDelegate:self queue:dispatch_queue_create("sample buffer delegate", DISPATCH_QUEUE_SERIAL)];
     
     /* Still image Output (take picture) */
     _stillImageOutput = [AVCaptureStillImageOutput new];
     NSDictionary *outputSettings = [NSDictionary dictionaryWithObjectsAndKeys:AVVideoCodecJPEG, AVVideoCodecKey, nil];
     [_stillImageOutput setOutputSettings:outputSettings];
+    
+    _movieFileOutput = [[AVCaptureMovieFileOutput alloc] init];
+    [_movieFileOutput setMovieFragmentInterval:kCMTimeInvalid];
 }
 
 - (void)initSession
@@ -150,11 +168,11 @@
     
     /* Session and Input Output*/
     [_session addInput:_input];
-    [_session addOutput:_videoFrameOutput];
+    //    [_session addOutput:_videoFrameOutput];
     [_session addOutput:_stillImageOutput];
     [_session commitConfiguration];
     
-    [self configSessionConnectionToPortrait:_videoFrameOutput];
+    //    [self configSessionConnectionToPortrait:_videoFrameOutput];
     [self configSessionConnectionToPortrait:_stillImageOutput];
 }
 
@@ -204,7 +222,7 @@
     [_session addInput:_input];
     [_session commitConfiguration];
     
-    [self configSessionConnectionToPortrait:_videoFrameOutput];
+    //    [self configSessionConnectionToPortrait:_videoFrameOutput];
     [self configSessionConnectionToPortrait:_stillImageOutput];
 }
 
@@ -285,24 +303,24 @@
     //    }];
 }
 
-#pragma mark - AVCaptureVideoDataOutputSampleBufferDelegate
-- (void)captureOutput:(AVCaptureOutput *)captureOutput
-didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
-       fromConnection:(AVCaptureConnection *)connection
-{
-    CVImageBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-    CIImage *ciImage = [[CIImage alloc] initWithCVImageBuffer:pixelBuffer];
-    // 這個地方到時候要建立工廠
-    if (_glContext && _ciContext) {
-        if (_glContext != [EAGLContext currentContext])
-        {
-            [EAGLContext setCurrentContext:_glContext];
-        }
-        
-        [_ciContext drawImage:ciImage inRect:CGRectMake(0, 0, _liveView.drawableWidth, _liveView.drawableHeight) fromRect:ciImage.extent];
-        [_liveView display];
-    }
-}
+//#pragma mark - AVCaptureVideoDataOutputSampleBufferDelegate
+//- (void)captureOutput:(AVCaptureOutput *)captureOutput
+//didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
+//       fromConnection:(AVCaptureConnection *)connection
+//{
+//    CVImageBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+//    CIImage *ciImage = [[CIImage alloc] initWithCVImageBuffer:pixelBuffer];
+//    // 這個地方到時候要建立工廠
+//    if (_glContext && _ciContext) {
+//        if (_glContext != [EAGLContext currentContext])
+//        {
+//            [EAGLContext setCurrentContext:_glContext];
+//        }
+//
+//        [_ciContext drawImage:ciImage inRect:CGRectMake(0, 0, _liveView.drawableWidth, _liveView.drawableHeight) fromRect:ciImage.extent];
+//        [_liveView display];
+//    }
+//}
 
 #pragma mark - Managing Focus Setting
 - (void)focusWithLocationFromSender:(id)sender
@@ -439,14 +457,13 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     AVCaptureVideoOrientation videoOrientation = [self videoOrientationForDeviceOrientation:deviceOrientation];
     [_stillImageConnection setVideoOrientation:videoOrientation];
     
-    __weak __typeof(self)weakself = self;
+    //__weak __typeof(self)weakself = self;
     [_stillImageOutput captureStillImageAsynchronouslyFromConnection:_stillImageConnection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
         
-        __strong __typeof(self)strongself = weakself;
+        //__strong __typeof(self)strongself = weakself;
         
         NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
         UIImage *image = [[UIImage alloc] initWithData:imageData];
-        NSLog(@"%ld",(long)[image imageOrientation]);
         if (_isFullScreenMode) {
             //            UIImage *crop_image =[strongself cropImage:image withCropSize:CGSizeMake(1836, 3264)];
             //
