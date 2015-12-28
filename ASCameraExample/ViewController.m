@@ -19,9 +19,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    _camera = [[ASCamera alloc]init];
-    [_camera setLiveView:_liveView];
-    [_camera startStream];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -36,7 +33,10 @@
 
 - (void) viewDidLayoutSubviews
 {
+    _camera = [[ASCamera alloc]initWithLifeView:_liveView];
+    [_camera startStream];
 }
+
 - (IBAction)anyGesture:(id)sender{
     [_camera gestureEventReciver:sender];
 }

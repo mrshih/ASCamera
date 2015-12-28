@@ -68,26 +68,6 @@
 }
 
 #pragma mark - Setter And Getter
-- (void)setLiveView:(GLKView *)liveView
-{
-    //    _liveView = liveView;
-    //
-    //    // add 16:9 constrants
-    //    _sixnightRatio = [NSLayoutConstraint constraintWithItem:_liveView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:_liveView attribute:NSLayoutAttributeWidth multiplier:1.3f constant:0.0f];
-    //    _sixnightRatio.active = NO;
-    //    [liveView addConstraint:_sixnightRatio];
-    //
-    //    /* OpenGL */
-    //    // 創建OpenGLES渲染環境
-    //    _glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-    //    // GLKView指定OpenGLES渲染環境+綁定
-    //    [_liveView setContext:_glContext];
-    //    _liveView.enableSetNeedsDisplay = NO;
-    //    [_liveView bindDrawable];
-    //    // 創建CIContext環境
-    //    _ciContext = [CIContext contextWithEAGLContext:_glContext options:@{ kCIContextWorkingColorSpace : [NSNull null],kCIContextUseSoftwareRenderer : @(NO)}];
-}
-
 - (void)initLiveView {
     // preview layer
     CGRect bounds = self.liveView.layer.bounds;
@@ -168,7 +148,7 @@
     
     /* Session and Input Output*/
     [_session addInput:_input];
-    //    [_session addOutput:_videoFrameOutput];
+    [_session addOutput:_movieFileOutput];
     [_session addOutput:_stillImageOutput];
     [_session commitConfiguration];
     

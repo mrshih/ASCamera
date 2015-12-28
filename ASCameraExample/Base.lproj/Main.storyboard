@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -17,40 +16,35 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <glkView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" enableSetNeedsDisplay="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7RL-jP-DEs">
-                                <rect key="frame" x="0.0" y="20" width="375" height="500"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lpE-uD-uYz">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tgD-xe-xuK">
-                                        <rect key="frame" x="164" y="431" width="46" height="30"/>
+                                        <rect key="frame" x="164" y="308.5" width="46" height="30"/>
                                         <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="shot:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4h1-fI-QUl"/>
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="tgD-xe-xuK" firstAttribute="centerX" secondItem="7RL-jP-DEs" secondAttribute="centerX" id="Fb9-Bg-6Ff"/>
-                                    <constraint firstAttribute="width" secondItem="7RL-jP-DEs" secondAttribute="height" multiplier="3:4" id="PRc-2L-fBX"/>
-                                    <constraint firstAttribute="bottom" secondItem="tgD-xe-xuK" secondAttribute="bottom" constant="39" id="e76-wm-rXA"/>
+                                    <constraint firstItem="tgD-xe-xuK" firstAttribute="centerY" secondItem="lpE-uD-uYz" secondAttribute="centerY" id="7h1-Nv-u1a"/>
+                                    <constraint firstItem="tgD-xe-xuK" firstAttribute="centerX" secondItem="lpE-uD-uYz" secondAttribute="centerX" id="fIe-QK-INi"/>
                                 </constraints>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="YLf-6K-ZyM" appends="YES" id="B0c-5N-iBh"/>
-                                    <outletCollection property="gestureRecognizers" destination="15o-n9-Bqo" appends="YES" id="W6E-is-UeQ"/>
-                                    <outletCollection property="gestureRecognizers" destination="3SI-gO-obE" appends="YES" id="vji-Yb-unf"/>
-                                </connections>
-                            </glkView>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="7RL-jP-DEs" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="3Ne-7F-og8"/>
-                            <constraint firstItem="7RL-jP-DEs" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="4RM-xd-qfJ"/>
-                            <constraint firstAttribute="trailing" secondItem="7RL-jP-DEs" secondAttribute="trailing" id="Iog-Am-Uep"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="lpE-uD-uYz" secondAttribute="bottom" id="7d7-Pm-Pio"/>
+                            <constraint firstAttribute="trailing" secondItem="lpE-uD-uYz" secondAttribute="trailing" id="8ta-I7-Scd"/>
+                            <constraint firstItem="lpE-uD-uYz" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="NF2-VC-Mlm"/>
+                            <constraint firstItem="lpE-uD-uYz" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="RaY-eP-JBL"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
-                        <outlet property="liveView" destination="7RL-jP-DEs" id="ZUe-8m-Cql"/>
+                        <outlet property="liveView" destination="lpE-uD-uYz" id="ksv-pl-Nf3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

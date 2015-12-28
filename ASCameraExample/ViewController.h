@@ -11,7 +11,7 @@
 
 @interface ViewController : UIViewController
 
-@property (strong, nonatomic) IBOutlet GLKView *liveView;
+@property (strong, nonatomic) IBOutlet UIView *liveView;
 - (IBAction)anyGesture:(id)sender;
 - (IBAction)shot:(id)sender;
 
