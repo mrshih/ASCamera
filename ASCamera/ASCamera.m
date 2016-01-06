@@ -49,22 +49,27 @@
 
 @implementation ASCamera
 
-- (instancetype)initWithLifeView:(UIView*)view
+- (void)attachOnLifeView:(UIView*)view
 {
-    self = [super init];
-    if (self) {
-        _liveView = view;
-        /* Config device */
-        [self initDeviceWithAutoMode];
-        [self initInput];
-        [self initOutput];
-        [self initSession];
-        [self initLiveView];
-        
-        // defult scale
-        _currentScale = 1.0f;
-    }
-    return self;
+    _liveView = view;
+    /* Config device */
+    [self initDeviceWithAutoMode];
+    [self initInput];
+    [self initOutput];
+    [self initSession];
+    [self initLiveView];
+    
+    // defult scale
+    _currentScale = 1.0f;
+}
+
++ (instancetype)cameraSingletons {
+    static ASCamera *shareASCamera = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        shareASCamera = [[self alloc] init];
+    });
+    return shareASCamera;
 }
 
 #pragma mark - Setter And Getter
@@ -236,12 +241,12 @@
 }
 
 #pragma mark - Live View play & stop
-- (void)startStream
+- (void)start
 {
     [_session startRunning];
 }
 
-- (void)stopStream
+- (void)stop
 {
     [_session stopRunning];
 }

@@ -15,10 +15,10 @@ typedef void (^shotCompleteHandler)(UIImage *photo, BOOL successful);
 
 @interface ASCamera : NSObject <AVCaptureVideoDataOutputSampleBufferDelegate>
 
-- (instancetype)initWithLifeView:(UIView*)view;
-
-- (void)startStream;
-- (void)stopStream;
++ (instancetype)cameraSingletons;
+- (void)attachOnLifeView:(UIView*)view;
+- (void)start;
+- (void)stop;
 - (void)shotPhoto:(shotCompleteHandler)handler;
 - (void)recordMovie;
 - (void)flipCameras;
