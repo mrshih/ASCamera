@@ -1,4 +1,9 @@
-#Sample code
+##Installation
+```
+pod 'ASCamera', :git => 'https://github.com/mrshih/ASCamera'
+```
+
+##Usage
 ```objective-c
 
 @property (strong, nonatomic) IBOutlet UIView *cameraView;
