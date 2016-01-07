@@ -456,14 +456,16 @@
             //            NSDictionary *meta = [[NSDictionary alloc] initWithDictionary:(__bridge NSDictionary *)(metadata)];
             //            CFRelease(metadata);
         }
+        handler(image, nil);
+        
         if (flag == true) {
             [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
                 [PHAssetChangeRequest creationRequestForAssetFromImage:image];
             } completionHandler:^(BOOL success, NSError * _Nullable error) {
                 if (success) {
                     //NSLog(@"Finished adding asset. %@", (success ? @"SUCCESSFUL" : error));
+                    handler(image, success);
                 }
-                handler(image, success);
             }];
         }
     }];
