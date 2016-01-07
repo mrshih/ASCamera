@@ -19,7 +19,7 @@ typedef void (^shotCompleteHandler)(UIImage *photo, BOOL successful);
 - (void)attachOnLifeView:(UIView*)view;
 - (void)start;
 - (void)stop;
-- (void)shotPhoto:(shotCompleteHandler)handler;
+- (void)shotPhotoAndSetSaveToSystemAblum:(BOOL)flag :(shotCompleteHandler)handler;
 - (void)recordMovie;
 - (void)flipCameras;
 - (AVCaptureFlashMode)autoPollingFlashMode;
