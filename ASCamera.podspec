@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "ASCamera"
-  s.version      = "0.4"
+  s.version      = "0.4.5"
   s.summary      = "A delightful iOS Camera Library"
 
   s.description  = <<-DESC
