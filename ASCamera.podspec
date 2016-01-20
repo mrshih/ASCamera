@@ -71,7 +71,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/mrshih/ASCamera.git", :tag => "v0.4" }
+  s.source       = { :git => "https://github.com/mrshih/ASCamera.git", :tag => "0.4.5" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
