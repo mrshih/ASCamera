@@ -33,8 +33,9 @@
 
 - (void) viewDidLayoutSubviews
 {
-    _camera = [[ASCamera alloc]initWithLifeView:_liveView];
-    [_camera startStream];
+    _camera = [ASCamera cameraSingletons];
+    [_camera attachOnLifeView:_liveView];
+    [_camera start];
 }
 
 - (IBAction)anyGesture:(id)sender{
@@ -42,7 +43,7 @@
 }
 
 - (IBAction)shot:(id)sender {
-    [_camera shotPhoto:^(UIImage *photo, BOOL successful) {
+    [_camera shotPhotoAndSetSaveToSystemAblum:YES :^(UIImage *photo, BOOL successful) {
         
     }];
     //[_camera flipCameras];

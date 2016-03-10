@@ -17,7 +17,9 @@
 @property (strong, nonatomic)UIView *liveView;
 
 @property AVCaptureDevice       *device;
+@property AVCaptureDevice       *audioDevice;
 @property AVCaptureInput        *input;
+@property AVCaptureInput        *audioInput;
 @property AVCaptureSession      *session;
 
 @property AVCaptureConnection   *videoConnection;
@@ -49,14 +51,15 @@
 
 @implementation ASCamera
 
-- (void)attachOnLifeView:(UIView*)view
+- (void)attachOnLifeView:(UIView*)view witMode:(CameraType)type
 {
     _liveView = view;
+    
     /* Config device */
     [self initDeviceWithAutoMode];
     [self initInput];
     [self initOutput];
-    [self initSession];
+    [self initSessionWithType:type];
     [self initLiveView];
     
     // defult scale
@@ -87,7 +90,8 @@
 - (void)initDeviceWithAutoMode
 {
     /* Device */
-    _device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    _device         = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    _audioDevice    = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];
     
     // 給調整曝光用的計算
     _maxEV = [_device maxExposureTargetBias]/4;
@@ -126,7 +130,8 @@
 
 - (void)initInput
 {
-    _input = [AVCaptureDeviceInput deviceInputWithDevice:_device error:nil];
+    _input      =   [AVCaptureDeviceInput deviceInputWithDevice:_device error:nil];
+    _audioInput =   [AVCaptureDeviceInput deviceInputWithDevice:_audioDevice error:nil];
 }
 
 - (void)initOutput
@@ -145,20 +150,40 @@
     [_movieFileOutput setMovieFragmentInterval:kCMTimeInvalid];
 }
 
-- (void)initSession
+- (void)initSessionWithType:(CameraType)type
 {
     _session = [[AVCaptureSession alloc] init];
+    
     [_session beginConfiguration];
-    [_session setSessionPreset:AVCaptureSessionPresetPhoto];
+    
+    if (type == CameraTypePhoto) {
+        [_session setSessionPreset:AVCaptureSessionPresetPhoto];
+    }else {
+        [_session setSessionPreset:AVCaptureSessionPreset1280x720];
+    }
     
     /* Session and Input Output*/
     [_session addInput:_input];
-    [_session addOutput:_movieFileOutput];
+    [_session addInput:_audioInput];
     [_session addOutput:_stillImageOutput];
-    [_session commitConfiguration];
+    [_session addOutput:_movieFileOutput];
     
-    //    [self configSessionConnectionToPortrait:_videoFrameOutput];
     [self configSessionConnectionToPortrait:_stillImageOutput];
+    [self configSessionConnectionToPortrait:_movieFileOutput];
+    
+    [_session commitConfiguration];
+}
+
+- (void)changeRecordMode:(CameraType)type {
+    [_session beginConfiguration];
+    
+    if (type == CameraTypePhoto) {
+        [_session setSessionPreset:AVCaptureSessionPresetPhoto];
+    }else {
+        [_session setSessionPreset:AVCaptureSessionPreset1280x720];
+    }
+    
+    [_session commitConfiguration];
 }
 
 /*
@@ -171,7 +196,7 @@
             if ([[port mediaType] isEqual:AVMediaTypeVideo] ) {
                 if ([connection isVideoOrientationSupported])
                 {
-                    if ([output isKindOfClass:[AVCaptureVideoDataOutput class]]) {
+                    if ([output isKindOfClass:[AVCaptureMovieFileOutput class]]) {
                         _videoConnection = connection;
                     }else if ([output isKindOfClass:[AVCaptureStillImageOutput class]]){
                         _stillImageConnection = connection;
@@ -207,7 +232,7 @@
     [_session addInput:_input];
     [_session commitConfiguration];
     
-    //    [self configSessionConnectionToPortrait:_videoFrameOutput];
+    //[self configSessionConnectionToPortrait:_videoFrameOutput];
     [self configSessionConnectionToPortrait:_stillImageOutput];
 }
 
@@ -489,6 +514,39 @@
     }
     
     return result;
+}
+
+#pragma mark - Record Video
+- (void)recordVideo:(NSString *)path {
+    if ([self.movieFileOutput isRecording]) {
+        [self.movieFileOutput stopRecording];
+        return;
+    }
+    
+    NSString *basePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    NSString *moviePath = [basePath stringByAppendingPathComponent:path];
+    [_movieFileOutput startRecordingToOutputFileURL:[NSURL fileURLWithPath:moviePath] recordingDelegate:self];
+}
+
+- (void)stopRecordVideo {
+    [self.movieFileOutput stopRecording];
+}
+
+- (BOOL)isRecording {
+    if ([self.movieFileOutput isRecording]) {
+        return true;
+    }else {
+        return false;
+    }
+}
+
+- (void)captureOutput:(AVCaptureFileOutput *)captureOutput didStartRecordingToOutputFileAtURL:(NSURL *)fileURL fromConnections:(NSArray *)connections {
+    NSLog(@"開始錄影");
+}
+
+- (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error {
+    NSLog(@"停止錄影");
+    [self.delegate outputVideoToURL:outputFileURL];
 }
 
 #pragma mark - For 16:9 Picture Crop
